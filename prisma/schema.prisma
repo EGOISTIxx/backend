@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email    String  @unique
+  username String  @unique
+  hash     String
+  hashedRt String?
+
+  status String?
+  image  String?
+
+  subscribeType Json?
+
+  favourites String[]
+
+  changedRaitingFilms Json[]
+
+  @@map("users")
+}
+
+model Film {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  titleRu          String
+  titleEn          String
+  description      String
+  shortDescription String
+  profit           String
+  internalRaiting  Json
+  externalRainting Json
+  duration         String
+  trailer          String
+  watch            String
+  type             String
+  releaseDate      String
+  images           Json
+  posters          String[]
+  geners           String[]
+  countries        String[]
+
+  creators String[]
+  actors   String[]
+  comments String[]
+
+  @@map("films")
+}
+
+model Author {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  @@map("authors")
+}
+
+model Actor {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  name   String @unique
+  avatar String
+
+  @@map("actors")
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  username  String?
+  userImage String?
+  text      String?
+  createdAt DateTime @default(now())
+  filmId    String?
+
+  @@map("comments")
+}
